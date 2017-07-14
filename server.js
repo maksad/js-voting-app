@@ -9,6 +9,8 @@ var session = require('express-session');
 var app = express();
 require('dotenv').load();
 require('./app/config/passport')(passport);
+app.set('views', __dirname + '/public/views');
+app.set('view engine', 'pug')
 
 mongoose.connect(process.env.MONGO_URI);
 mongoose.Promise = global.Promise;
