@@ -2,7 +2,7 @@
 
 var Users = require('../models/users.js');
 
-function PollHandler () {
+function PollsHandler () {
 
 	this.getPolls = function (req, res) { 
 		// Users
@@ -57,4 +57,4 @@ function PollHandler () {
   };
 }
 
-module.exports = PollHandler;
+module.exports = PollsHandler;
