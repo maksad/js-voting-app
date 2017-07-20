@@ -1,19 +1,21 @@
 'use strict';
 
-var path = process.cwd();
-var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+const path = process.cwd();
+const ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+const PollsHandler = require(path + '/app/controllers/pollsHandler.server.js');
 
 module.exports = function (app, passport) {
 
   function isLoggedIn (req, res, next) {
     if (req.isAuthenticated()) {
       return next();
-    } else {
+    } else { 
       res.redirect('/login');
     }
   }
 
   var clickHandler = new ClickHandler();
+  var pollsHandler = new PollsHandler();
 
   app.route('/')
     .get(isLoggedIn, function (req, res) {
@@ -55,8 +57,13 @@ module.exports = function (app, passport) {
     .post(isLoggedIn, clickHandler.addClick)
     .delete(isLoggedIn, clickHandler.resetClicks);
   
-  app.route('/test')
-    .get((req, res) => {
-      res.render('index');
+  app.route('/new-poll')
+    .get(isLoggedIn, function (req, res) {
+      res.render('new-poll');
     })
+    .post(isLoggedIn, pollsHandler.addPoll);
+  
+  app.route('/my-polls')
+    .get(isLoggedIn, pollsHandler.getPolls);
+    
 };

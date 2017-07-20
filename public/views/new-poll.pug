@@ -1,0 +1,21 @@
+extends layout.pug
+
+block content
+  .row
+    h3 Make a new poll
+    p.error #{error}
+    form.col.s12(action='/new-poll' method='POST')
+      .row
+        .input-field.col.s12
+          input#title.validate(type='text', name="title")
+          label(for='title', data-error='wrong', data-success='right') Title
+
+          
+      .row
+        .input-field.col.s12
+          textarea#options.materialize-textarea(name="options")
+          label(for='options') Options (seperated by common. eg: option1, option2, option3):
+
+      .row
+        .input-field.col.s12
+          button.waves-effect.waves-light.btn(type="submit") Submit
