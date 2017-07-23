@@ -8,8 +8,16 @@
    var displayName = document.querySelector('#display-name');
    var apiUrl = appUrl + '/api/:id';
 
+   function displayPrivateNavLinks() {
+      var navbarElements = document.querySelectorAll('header nav #nav-mobile li');  
+      for (var elem of navbarElements) { 
+        elem.classList.remove('hide');
+      }
+   }
+   
    function updateHtmlElement (data, element, userProperty) {
       element.innerHTML = data[userProperty];
+      displayPrivateNavLinks();
    }
 
    ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, function (data) {
@@ -31,7 +39,7 @@
 
       if (profileRepos !== null) {
          updateHtmlElement(userObject, profileRepos, 'publicRepos');   
-      }
+      } 
 
    }));
 })();

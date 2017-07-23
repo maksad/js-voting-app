@@ -1,19 +1,17 @@
 nav
   div(class="nav-wrapper")
-    a(href="#" class="brand-logo") Js Voting App 
-    a.button-collapse(href='#', data-activates='mobile-demo')
-      i.material-icons ...
-    ul(id="nav-mobile" class="right hide-on-med-and-down")
-      li 
-        a.menu(href='#') Welcome, 
+    a(href="#" class="brand-logo hide-on-med-only") Js Voting App  
+    ul(id="nav-mobile" class="right")
+      li.hide
+        a.menu(href='/') Welcome, 
           span#display-name  
       li
         a.menu(href='/') Home
-      li
+      li.hide
         a.menu(href='/my-polls') My polls
-      li
+      li.hide
         a.menu(href='/new-poll') New poll
-      li
+      li.hide
         a.menu(href='/profile') Profile
-      li
+      li.hide
         a.menu(href='/logout') Logout
