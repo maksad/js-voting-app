@@ -4,6 +4,19 @@ var Users = require('../models/users.js');
 var Polls = require('../models/polls.js');
 
 function PollsHandler () {
+  this.singlePoll = function (req, res) {
+    Polls
+      .findOne({'_id': req.params.id})
+      .exec(function (err, result) {
+        if (err) { throw err; }
+
+        res.render('poll', {
+          singlePoll: JSON.stringify(result)
+        });
+      }
+    );
+  };
+
   this.getPolls = function (req, res) {
     Polls
       .find({}, function (err, result) {

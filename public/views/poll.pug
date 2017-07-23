@@ -1,0 +1,38 @@
+extends layout.pug
+
+block content
+  style(type='text/css').
+    .remove {
+      color: red !important;
+    }
+
+    .card-info .info {
+      padding: 20px;
+    }
+
+    h2.header {
+      background: whitesmoke;
+      padding: 20px;
+      margin-bottom: -8px;
+    }
+
+    .card.horizontal {
+      box-shadow: none;
+      background: whitesmoke;
+      padding: 10px;
+    }
+
+  - var poll = JSON.parse(singlePoll)
+
+  .col.s12.m7
+    h2.header= poll.title
+    .card.horizontal
+      .card-info
+        p.info this is info
+      .card-stacked
+        .card-content
+          ul
+            each option in poll.options
+              li= option.title
+        .card-action
+          a(class="remove" href='#') Remove this poll
