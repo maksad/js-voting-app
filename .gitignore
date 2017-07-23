@@ -3,3 +3,4 @@ node_modules/
 .env
 mongo/
 dev_files
+data/
