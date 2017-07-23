@@ -1,16 +1,20 @@
 'use strict';
 
 var Users = require('../models/users.js');
+var Polls = require('../models/polls.js');
 
 function PollsHandler () {
   this.getPolls = function (req, res) {
     // Users
-    // 	.findOne({ 'github.id': req.user.github.id }, { '_id': false })
-    // 	.exec(function (err, result) {
-    // 		if (err) { throw err; }
+    //  .findOne({ 'github.id': req.user.github.id }, { '_id': false })
+    //  .exec(function (err, result) {
+    //    if (err) { throw err; }
 
-    // 		res.render('polls', {polls: result.polls});
-    // 	});
+    //    res.render('polls', {polls: result.polls});
+    //  });
+
+    //    res.render('polls', {polls: result.polls});
+    //  });
 
     Polls
       .find({}, function (err, result) {
@@ -50,7 +54,7 @@ function PollsHandler () {
       .exec(function (err, result) {
           if (err) { throw err; }
 
-          res.redirect('my-polls');
+          res.redirect('new-poll');
         }
       );
   };
