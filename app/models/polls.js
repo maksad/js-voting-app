@@ -2,17 +2,19 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var User = require('./users.js');
- 
-var Poll = new Schema({ 
-  author: User,
+
+var Poll = new Schema({
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   title: String,
   options: [
     {
       title: String,
       voters: [String]
     }
-  ] 
+  ]
 });
 
 module.exports = mongoose.model('Poll', Poll);

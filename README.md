@@ -17,4 +17,3 @@ This is simple voting application based on FreeCodeCamp [challange](https://www.
 ### Demo
 
 Link to [js-voting-app.herokuapp.com](https://js-voting-app.herokuapp.com/)
-
