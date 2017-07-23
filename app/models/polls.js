@@ -12,7 +12,10 @@ var Poll = new Schema({
   options: [
     {
       title: String,
-      voters: [String]
+      voters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }]
     }
   ]
 });

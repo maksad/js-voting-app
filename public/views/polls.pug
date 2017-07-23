@@ -6,6 +6,8 @@ block content
       h4 List of all polls
 
 
-    li.collection-item Poll1
-    // each user in {users}
-    //   li.collection-item= user
+    each poll in JSON.parse(polls)
+      li.collection-item
+        div= poll.title
+          a.secondary-content(href='#')
+            i.material-icons send

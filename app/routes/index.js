@@ -16,9 +16,7 @@ module.exports = function (app, passport) {
   var pollsHandler = new PollsHandler();
 
   app.route('/')
-    .get(isLoggedIn, function (req, res) {
-      res.render('polls')
-    });
+    .get(pollsHandler.getPolls);
 
   app.route('/login')
     .get(function (req, res) {
@@ -57,6 +55,6 @@ module.exports = function (app, passport) {
     .post(isLoggedIn, pollsHandler.addPoll);
 
   app.route('/my-polls')
-    .get(isLoggedIn, pollsHandler.getPolls);
+    .get(isLoggedIn, pollsHandler.myPolls);
 
 };

@@ -1,22 +1,28 @@
 'use strict';
 
 var Users = require('../models/users.js');
+var Polls = require('../models/polls.js');
 
 function PollsHandler () {
   this.getPolls = function (req, res) {
-    // Users
-    // 	.findOne({ 'github.id': req.user.github.id }, { '_id': false })
-    // 	.exec(function (err, result) {
-    // 		if (err) { throw err; }
-
-    // 		res.render('polls', {polls: result.polls});
-    // 	});
-
     Polls
       .find({}, function (err, result) {
         if (err) { throw err; }
 
-        res.render('my-polls', {users: result});
+        res.render('polls', {
+          polls: JSON.stringify(result)
+        });
+      });
+  };
+
+  this.myPolls = function (req, res) {
+    Polls
+      .find({}, function (err, result) {
+        if (err) { throw err; }
+
+        res.render('my-polls', {
+          polls: JSON.stringify(result)
+        });
       });
   };
 
@@ -39,20 +45,19 @@ function PollsHandler () {
       );
     }
 
-    Users
-      .findOneAndUpdate(
-        {'github.id': req.user.github.id},
-        {
-          'polls.title': title,
-          'polls.options': options
-        }
-      )
-      .exec(function (err, result) {
-          if (err) { throw err; }
+    options = options.map((option) => {
+      return { title: option }
+    });
+    var poll = new Polls({
+      'author': req.user,
+      title: title,
+      options: options
+    });
 
-          res.redirect('my-polls');
-        }
-      );
+    poll.save((err, poll) => {
+      if (err) return console.error(err);
+      res.redirect('my-polls');
+    });
   };
 }
 
