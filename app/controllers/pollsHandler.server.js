@@ -3,23 +3,22 @@
 var Users = require('../models/users.js');
 
 function PollsHandler () {
+  this.getPolls = function (req, res) {
+    // Users
+    // 	.findOne({ 'github.id': req.user.github.id }, { '_id': false })
+    // 	.exec(function (err, result) {
+    // 		if (err) { throw err; }
 
-	this.getPolls = function (req, res) { 
-		// Users
-		// 	.findOne({ 'github.id': req.user.github.id }, { '_id': false })
-		// 	.exec(function (err, result) {
-		// 		if (err) { throw err; }
+    // 		res.render('polls', {polls: result.polls});
+    // 	});
 
-		// 		res.render('polls', {polls: result.polls});
-		// 	});
-		
-		Users
-			.find({}, function (err, result) {
-				if (err) { throw err; }
+    Polls
+      .find({}, function (err, result) {
+        if (err) { throw err; }
 
-				res.render('my-polls', {users: result}); 
-			});
-	};
+        res.render('my-polls', {users: result});
+      });
+  };
 
   this.addPoll = function (req, res) {
     var title = req.body.title;
@@ -43,9 +42,9 @@ function PollsHandler () {
     Users
       .findOneAndUpdate(
         {'github.id': req.user.github.id},
-        { 
+        {
           'polls.title': title,
-          'polls.options': options 
+          'polls.options': options
         }
       )
       .exec(function (err, result) {

@@ -1,23 +1,23 @@
 head
-  
+
   link(rel="stylesheet" href="./public/css/main.css")
-  link(rel="stylesheet" href="./public/css/home.css") 
+  link(rel="stylesheet" href="./public/css/home.css")
   // Import Google Icon Font
   link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
   // Import materialize.css
   link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css")
   // Let browser know website is optimized for mobile
   meta(name='viewport', content='width=device-width, initial-scale=1.0')
-  
+
 
 body
   script(src='https://code.jquery.com/jquery-2.1.1.min.js')
   script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js")
-  
-  header 
+
+  header
     include ./nav-bar.pug
   block content
-  
+
   script(type='text/javascript', src='common/ajax-functions.js')
   script(type='text/javascript', src='controllers/userController.client.js')
   script(type='text/javascript', src='common/main.js')

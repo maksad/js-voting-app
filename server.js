@@ -22,22 +22,22 @@ app.use('/common', express.static(process.cwd() + '/app/common'));
 app.use(express.static('public'))
 
 app.use(session({
-	secret: 'secretClementine',
-	resave: false,
-	saveUninitialized: true
+  secret: 'secretClementine',
+  resave: false,
+  saveUninitialized: true
 }));
 
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
-})); 
+}));
 
 routes(app, passport);
 
 var port = process.env.PORT || 8080;
 app.listen(port,  function () {
-	console.log('Node.js listening on port ' + port + '...');
+  console.log('Node.js listening on port ' + port + '...');
 });
