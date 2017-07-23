@@ -1,17 +1,20 @@
 nav
   div(class="nav-wrapper")
-    a(href="#" class="brand-logo hide-on-med-only") Js Voting App
-    ul(id="nav-mobile" class="right")
-      li.hide
-        a.menu(href='/') Welcome,
-          span#display-name
-      li
-        a.menu(href='/') Home
-      li.hide
-        a.menu(href='/my-polls') My polls
-      li.hide
-        a.menu(href='/new-poll') New poll
-      li.hide
-        a.menu(href='/profile') Profile
-      li.hide
-        a.menu(href='/logout') Logout
+    .container
+      a(href="/" class="brand-logo hide-on-med-only") Js Voting App
+      ul(id="nav-mobile" class="right")
+        li.hide
+          a.menu(href='/') Welcome,
+            span#display-name
+        li
+          a.menu(href='/') Home
+        li.hide
+          a.menu(href='/my-polls') My polls
+        li.hide
+          a.menu(href='/new-poll') New poll
+        li.hide
+          a.menu(href='/profile') Profile
+        li.hide
+          a.menu(href='/logout') Logout
+        li
+          a.menu(href='/auth/github') Login
