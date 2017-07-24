@@ -3,18 +3,17 @@
 var Users = require('../models/users.js');
 var Polls = require('../models/polls.js');
 
-function PollsHandler () {
+function PollsHandler() {
   this.singlePoll = function (req, res) {
     Polls
-      .findOne({'_id': req.params.id})
+      .findOne({ '_id': req.params.id })
       .exec(function (err, result) {
         if (err) { throw err; }
 
         res.render('poll', {
           singlePoll: JSON.stringify(result)
         });
-      }
-    );
+      });
   };
 
   this.getPolls = function (req, res) {
@@ -46,15 +45,13 @@ function PollsHandler () {
 
     if (title === '' || title === ' ') {
       return res.render(
-        'new-poll',
-        {error: 'Title cannot be empty.'}
+        'new-poll', { error: 'Title cannot be empty.' }
       );
     }
 
     if (options.length < 2) {
       return res.render(
-        'new-poll',
-        {error: 'You must provide at least two options separated with comma.'}
+        'new-poll', { error: 'You must provide at least two options separated with comma.' }
       );
     }
 

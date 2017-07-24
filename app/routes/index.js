@@ -5,7 +5,7 @@ const PollsHandler = require(path + '/app/controllers/pollsHandler.server.js');
 
 module.exports = function (app, passport) {
 
-  function isLoggedIn (req, res, next) {
+  function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
       return next();
     } else {
