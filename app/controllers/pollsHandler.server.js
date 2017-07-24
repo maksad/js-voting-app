@@ -16,6 +16,12 @@ function PollsHandler() {
       });
   };
 
+  this.deletePoll = function (req, res) {
+    Polls.remove({ _id: req.params.id }, function (err) {
+      res.redirect('/my-polls');
+    });
+  };
+
   this.getPolls = function (req, res) {
     Polls
       .find({}, function (err, result) {

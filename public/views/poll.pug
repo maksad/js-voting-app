@@ -47,7 +47,7 @@ block content
             each option in poll.options
               li #{option.title} #{option.voters.length}
         .card-action
-          a(class="remove" href='#') Remove this poll
+          a(class="remove" href='/delete/' + poll._id) Remove this poll
 
   script.
     var chartElements = document.querySelectorAll('.chart-data-to-draw li');
