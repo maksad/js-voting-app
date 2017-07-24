@@ -22,17 +22,70 @@ block content
       padding: 10px;
     }
 
+    .no-data {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      color: #777777;
+    }
+
   - var poll = JSON.parse(singlePoll)
 
-  .col.s12.m7
-    h2.header= poll.title
-    .card.horizontal
-      .card-info
-        p.info this is info
-      .card-stacked
+  .row
+    .col.s12
+      .card
+        .card-image
+          .card-info
+            ul.chart-data-to-draw
+              each option in poll.options
+                li(option=option.title, voters=option.voters.length)
+            #donutchart(style='width: 100%; height: 350px;')
         .card-content
           ul
             each option in poll.options
-              li= option.title
+              li #{option.title} #{option.voters.length}
         .card-action
           a(class="remove" href='#') Remove this poll
+
+  script.
+    var chartElements = document.querySelectorAll('.chart-data-to-draw li');
+    chartData = [['Poll', 'Options']];
+    var votersSum = 0;
+    for (var elem of chartElements) {
+      chartData.push([
+        elem.getAttribute('option'),
+        elem.getAttribute('voters')
+      ]);
+      votersSum += Number(elem.getAttribute('voters'));
+    }
+
+    if (votersSum !== 0) {
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+    } else {
+      displayNoDataMessage();
+    }
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(chartData);
+      var options = {
+        pieHole: 0.4,
+        legend : {position: 'bottom'}
+      };
+      var chart = new google.visualization.PieChart(
+        document.getElementById('donutchart')
+      );
+      chart.draw(data, options);
+    }
+
+    function displayNoDataMessage() {
+      var node = document.createElement('div');
+      var textnode = document.createTextNode('Not enough data to display chart');
+      node.classList.add('no-data')
+      node.appendChild(textnode);
+      document.getElementById('donutchart').appendChild(node);
+    }
+
+
