@@ -22,8 +22,12 @@ function PollsHandler() {
           return res.status(404).send('Poll was not found.');
         }
 
+        var isButtonVisible = Boolean(req.user) &&
+          result.author.toHexString() === req.user.id;
+
         res.render('poll', {
-          singlePoll: JSON.stringify(result)
+          singlePoll: JSON.stringify(result),
+          isDeleteButtonVisible: isButtonVisible
         });
       });
   };
