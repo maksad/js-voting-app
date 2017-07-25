@@ -8,7 +8,9 @@ function PollsHandler() {
     Polls
       .findOne({ '_id': req.params.id })
       .exec(function (err, result) {
-        if (err) { throw err; }
+        if (err) {
+          return res.status(404).send('Poll was not found.');
+        }
 
         res.render('poll', {
           singlePoll: JSON.stringify(result)
@@ -38,8 +40,6 @@ function PollsHandler() {
   this.getPolls = function (req, res) {
     Polls
       .find({}, function (err, result) {
-        if (err) { throw err; }
-
         res.render('polls', {
           polls: JSON.stringify(result)
         });
