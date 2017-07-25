@@ -15,9 +15,6 @@ module.exports = function (app, passport) {
 
   var pollsHandler = new PollsHandler();
 
-  app.route('/')
-    .get(pollsHandler.getPolls);
-
   app.route('/login')
     .get(function (req, res) {
       res.render('login');
@@ -27,11 +24,6 @@ module.exports = function (app, passport) {
     .get(function (req, res) {
       req.logout();
       res.redirect('/login');
-    });
-
-  app.route('/profile')
-    .get(isLoggedIn, function (req, res) {
-      res.render('profile');
     });
 
   app.route('/api/:id')
@@ -47,6 +39,14 @@ module.exports = function (app, passport) {
       successRedirect: '/',
       failureRedirect: '/login'
     }));
+
+  app.route('/')
+    .get(pollsHandler.getPolls);
+
+  app.route('/profile')
+    .get(isLoggedIn, function (req, res) {
+      res.render('profile');
+    });
 
   app.route('/new-poll')
     .get(isLoggedIn, function (req, res) {
