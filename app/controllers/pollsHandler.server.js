@@ -48,7 +48,7 @@ function PollsHandler() {
 
   this.myPolls = function (req, res) {
     Polls
-      .find({}, function (err, result) {
+      .find({'author': req.user.id}, function (err, result) {
         if (err) { throw err; }
 
         res.render('my-polls', {
