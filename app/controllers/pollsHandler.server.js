@@ -4,6 +4,16 @@ var Users = require('../models/users.js');
 var Polls = require('../models/polls.js');
 
 function PollsHandler() {
+  this.votePoll = function(req, res) {
+    var optionId = req.body.userChoice;
+    var pollId = req.params.id;
+
+    if (!optionId) {
+      return res.status(400).send('User voted option is not defined.');
+    }
+
+  };
+
   this.singlePoll = function (req, res) {
     Polls
       .findOne({ '_id': req.params.id })

@@ -31,6 +31,10 @@ block content
       color: #777777;
     }
 
+    .input-field.col.s12 select {
+      display: block;
+    }
+
   - var poll = JSON.parse(singlePoll)
 
   .row
@@ -43,9 +47,15 @@ block content
                 li(option=option.title, voters=option.voters.length)
             #donutchart(style='width: 100%; height: 350px;')
         .card-content
-          ul
-            each option in poll.options
-              li #{option.title} #{option.voters.length}
+          .row
+            form.col.s12(action='vote/' + poll._id, method='POST')
+              .row
+                .input-field.col.s12
+                  select(name='userChoice')
+                    option(value='', disabled='', selected='') Choose your option
+                    each option in poll.options
+                      option(value=option._id) #{option.title}
+              button.btn.waves-effect.waves-light(type='submit', name='action') Submit
         .card-action
           a(class="remove" href='/delete/' + poll._id) Remove this poll
 
