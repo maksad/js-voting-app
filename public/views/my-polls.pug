@@ -9,5 +9,5 @@ block content
     each poll in JSON.parse(polls)
       li.collection-item
         div= poll.title
-          a.secondary-content(href='#')
+          a.secondary-content(href='/' + poll._id)
             i.material-icons send

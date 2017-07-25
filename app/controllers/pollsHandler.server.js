@@ -17,9 +17,22 @@ function PollsHandler() {
   };
 
   this.deletePoll = function (req, res) {
-    Polls.remove({ _id: req.params.id }, function (err) {
-      res.redirect('/my-polls');
-    });
+    Polls
+      .findOne({ '_id': req.params.id })
+      .exec(function (err, result) {
+        if (err) {
+          return res.status(404).send('Poll does not exist.');
+        }
+
+        if (result.author.toHexString() === req.user.id) {
+          Polls.remove({ _id: req.params.id }, function (err) {
+            return res.redirect('/my-polls');
+          });
+        } else {
+          return res.status(403).send('You have no rights to delete this poll.');
+        }
+      });
+
   };
 
   this.getPolls = function (req, res) {
