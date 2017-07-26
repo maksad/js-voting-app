@@ -12,6 +12,18 @@ function PollsHandler() {
       return res.status(400).send('User voted option is not defined.');
     }
 
+    Polls
+      .findByIdAndUpdate(
+          { '_id': pollId },
+          {$push: {
+              'voters': {optionId: optionId, user: req.user.id}
+            }
+          },
+          {safe: true, upsert: true},
+          (err, result) => {
+            res.redirect('/' + pollId);
+          }
+      );
   };
 
   this.singlePoll = function (req, res) {

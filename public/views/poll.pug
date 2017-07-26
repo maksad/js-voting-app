@@ -42,9 +42,10 @@ block content
       .card
         .card-image
           .card-info
+            p.all-options(all-options=JSON.stringify(poll.options))
             ul.chart-data-to-draw
-              each option in poll.options
-                li(option=option.title, voters=option.voters.length)
+              each voter in poll.voters
+                li(option=voter.optionId, voter=voter.user)
             #donutchart(style='width: 100%; height: 350px;')
         .card-content
           .row
@@ -61,18 +62,18 @@ block content
             a(class="remove" href='/delete/' + poll._id) Remove this poll
 
   script.
-    var chartElements = document.querySelectorAll('.chart-data-to-draw li');
-    chartData = [['Poll', 'Options']];
-    var votersSum = 0;
-    for (var elem of chartElements) {
+    var options = getOptions();
+    var optionsDictionary = getOptionsDictionary();
+
+    var chartData = [['Poll', 'Options']];
+    for (var option of options) {
       chartData.push([
-        elem.getAttribute('option'),
-        elem.getAttribute('voters')
+        optionsDictionary[option.value],
+        option.count
       ]);
-      votersSum += Number(elem.getAttribute('voters'));
     }
 
-    if (votersSum !== 0) {
+    if (options.length !== 0) {
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
     } else {
@@ -98,5 +99,49 @@ block content
       node.appendChild(textnode);
       document.getElementById('donutchart').appendChild(node);
     }
+
+    function compressArray(original) {
+      var compressed = [];
+      var copy = original.slice(0);
+      for (var i = 0; i < original.length; i++) {
+        var myCount = 0;
+        for (var w = 0; w < copy.length; w++) {
+          if (original[i] == copy[w]) {
+            myCount++;
+            delete copy[w];
+          }
+        }
+        if (myCount > 0) {
+          var a = new Object();
+          a.value = original[i];
+          a.count = myCount;
+          compressed.push(a);
+        }
+      }
+      return compressed;
+    };
+
+    function getOptions() {
+      var chartElements = document.querySelectorAll('.chart-data-to-draw li');
+      var options = [];
+      for (var el of chartElements) {
+        var option = el.getAttribute('option');
+        options.push(option);
+      }
+      return compressArray(options);
+    }
+
+    function getOptionsDictionary() {
+      var element = element = document.querySelector('p.all-options');
+      var allOptions = JSON.parse(element.getAttribute('all-options'));
+      var optionsDictionary = {};
+
+      for (var option of allOptions) {
+        optionsDictionary[option._id] = option.title;
+      }
+
+      return optionsDictionary;
+    }
+
 
 
