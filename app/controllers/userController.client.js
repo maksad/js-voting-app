@@ -12,6 +12,7 @@
     for (var elem of navbarElements) {
       elem.classList.remove('hide');
     }
+    document.querySelector('#login-link').classList.add('hide');
   }
 
   function updateHtmlElement (data, element, userProperty) {
