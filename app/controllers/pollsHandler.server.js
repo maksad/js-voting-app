@@ -12,6 +12,7 @@ function PollsHandler() {
     if (customOption) {
       createACustomOptionAndVote(req, res, pollId, customOption);
     } else {
+      var asd = 123;
       voteForExistingOption(req, res, pollId, optionId);
     }
   };
@@ -75,8 +76,7 @@ function PollsHandler() {
 
   this.addPoll = function (req, res) {
     var title = req.body.title;
-    var options = req.body.options;
-    options = options.split(',').map(opt => opt.trim());
+    var options = parseOptions(req.body.options);
 
     if (title === '' || title === ' ') {
       return res.render(
@@ -104,6 +104,20 @@ function PollsHandler() {
       res.redirect('my-polls');
     });
   };
+}
+
+function parseOptions(options) {
+  var trimmedOptions = options.split(',').map(opt => opt.trim());
+  var compressedOptions = compressArray(trimmedOptions);
+
+  var parsedOptions = [];
+  for (var option of compressedOptions) {
+    if (option.value.trim() !== '') {
+      parsedOptions.push(option.value);
+    }
+  }
+
+  return parsedOptions;
 }
 
 function compressArray(original) {
