@@ -53,9 +53,12 @@ block content
               .row
                 .input-field.col.s12
                   select(name='userChoice')
-                    option(value='', disabled='', selected='') Choose your option
                     each option in poll.options
                       option(value=option._id) #{option.title}
+              .row
+                .input-field.col.s12
+                  input#custom-option.validate(type='text' name='customOption')
+                  label(for='customOption') I'd like to vote for:
               button.btn.waves-effect.waves-light(type='submit', name='action') Submit
         if isDeleteButtonVisible
           .card-action
@@ -142,6 +145,3 @@ block content
 
       return optionsDictionary;
     }
-
-
-

@@ -3,27 +3,60 @@
 var Users = require('../models/users.js');
 var Polls = require('../models/polls.js');
 
+function voteForExistingOption(req, res, pollId, optionId) {
+  Polls
+    .findByIdAndUpdate(
+        { '_id': pollId },
+        {$push: {
+            'voters': {optionId: optionId, user: req.user.id}
+          }
+        },
+        {safe: true, upsert: true},
+        (err, result) => {
+          res.redirect('/' + pollId);
+        }
+    );
+}
+
+function createACustomOptionAndVote(req, res, pollId, customOption) {
+  Polls
+    .findOne({ '_id': pollId })
+    .then(addNewOptionToPoll)
+    .then(voteForNewlyAddedOption);
+
+  function addNewOptionToPoll(poll) {
+    var titles = [];
+    for (var option of poll.options) {
+      titles.push(option.title);
+    }
+
+    if (!titles.includes(customOption)) {
+      poll.options.push({title: customOption});
+    }
+
+    return poll.save();
+  }
+
+  function voteForNewlyAddedOption(updatedPoll) {
+    for (var option of updatedPoll.options) {
+      if (option.title ===  customOption) {
+        return voteForExistingOption(req, res, pollId, option.id);
+      }
+    }
+  }
+}
+
 function PollsHandler() {
   this.votePoll = function(req, res) {
     var optionId = req.body.userChoice;
+    var customOption = req.body.customOption;
     var pollId = req.params.id;
 
-    if (!optionId) {
-      return res.status(400).send('User voted option is not defined.');
+    if (customOption) {
+      createACustomOptionAndVote(req, res, pollId, customOption);
+    } else {
+      voteForExistingOption(req, res, pollId, optionId);
     }
-
-    Polls
-      .findByIdAndUpdate(
-          { '_id': pollId },
-          {$push: {
-              'voters': {optionId: optionId, user: req.user.id}
-            }
-          },
-          {safe: true, upsert: true},
-          (err, result) => {
-            res.redirect('/' + pollId);
-          }
-      );
   };
 
   this.singlePoll = function (req, res) {
