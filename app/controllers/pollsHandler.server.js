@@ -12,8 +12,19 @@ function PollsHandler() {
     if (customOption) {
       createACustomOptionAndVote(req, res, pollId, customOption);
     } else {
-      var asd = 123;
-      voteForExistingOption(req, res, pollId, optionId);
+      Polls
+        .findOne({'_id': pollId})
+        .then((poll) => {
+          for (var vote of poll.voters) {
+            if (vote.user.toHexString() === req.user.id) {
+              vote.remove();
+              return poll.save();
+            }
+          }
+        })
+        .then(() => {
+          return voteForExistingOption(req, res, pollId, optionId)
+        });
     }
   };
 
