@@ -59,7 +59,21 @@ block content
                 .input-field.col.s12
                   input#custom-option.validate(type='text' name='customOption')
                   label(for='customOption') I'd like to vote for:
-              button.btn.waves-effect.waves-light(type='submit', name='action') Submit
+              .row
+                button.btn.waves-effect.waves-light(type='submit', name='action') Submit
+              .row
+                a.twitter-share-button(
+                  href='https://twitter.com/share',
+                  data-show-count='false'
+                ) Tweet
+                script(
+                  async='',
+                  src='//platform.twitter.com/widgets.js',
+                  charset='utf-8'
+                )
+
+
+
         if isDeleteButtonVisible
           .card-action
             a(class="remove" href='/delete/' + poll._id) Remove this poll
