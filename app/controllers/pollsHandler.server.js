@@ -3,49 +3,6 @@
 var Users = require('../models/users.js');
 var Polls = require('../models/polls.js');
 
-function voteForExistingOption(req, res, pollId, optionId) {
-  Polls
-    .findByIdAndUpdate(
-        { '_id': pollId },
-        {$push: {
-            'voters': {optionId: optionId, user: req.user.id}
-          }
-        },
-        {safe: true, upsert: true},
-        (err, result) => {
-          res.redirect('/' + pollId);
-        }
-    );
-}
-
-function createACustomOptionAndVote(req, res, pollId, customOption) {
-  Polls
-    .findOne({ '_id': pollId })
-    .then(addNewOptionToPoll)
-    .then(voteForNewlyAddedOption);
-
-  function addNewOptionToPoll(poll) {
-    var titles = [];
-    for (var option of poll.options) {
-      titles.push(option.title);
-    }
-
-    if (!titles.includes(customOption)) {
-      poll.options.push({title: customOption});
-    }
-
-    return poll.save();
-  }
-
-  function voteForNewlyAddedOption(updatedPoll) {
-    for (var option of updatedPoll.options) {
-      if (option.title ===  customOption) {
-        return voteForExistingOption(req, res, pollId, option.id);
-      }
-    }
-  }
-}
-
 function PollsHandler() {
   this.votePoll = function(req, res) {
     var optionId = req.body.userChoice;
@@ -147,6 +104,70 @@ function PollsHandler() {
       res.redirect('my-polls');
     });
   };
+}
+
+function compressArray(original) {
+  var compressed = [];
+  var copy = original.slice(0);
+  for (var i = 0; i < original.length; i++) {
+    var myCount = 0;
+    for (var w = 0; w < copy.length; w++) {
+      if (original[i] == copy[w]) {
+        myCount++;
+        delete copy[w];
+      }
+    }
+    if (myCount > 0) {
+      var a = new Object();
+      a.value = original[i];
+      a.count = myCount;
+      compressed.push(a);
+    }
+  }
+  return compressed;
+};
+
+function voteForExistingOption(req, res, pollId, optionId) {
+  Polls
+    .findByIdAndUpdate(
+        { '_id': pollId },
+        {$push: {
+            'voters': {optionId: optionId, user: req.user.id}
+          }
+        },
+        {safe: true, upsert: true},
+        (err, result) => {
+          res.redirect('/' + pollId);
+        }
+    );
+}
+
+function createACustomOptionAndVote(req, res, pollId, customOption) {
+  Polls
+    .findOne({ '_id': pollId })
+    .then(addNewOptionToPoll)
+    .then(voteForNewlyAddedOption);
+
+  function addNewOptionToPoll(poll) {
+    var titles = [];
+    for (var option of poll.options) {
+      titles.push(option.title);
+    }
+
+    if (!titles.includes(customOption)) {
+      poll.options.push({title: customOption});
+    }
+
+    return poll.save();
+  }
+
+  function voteForNewlyAddedOption(updatedPoll) {
+    for (var option of updatedPoll.options) {
+      if (option.title ===  customOption) {
+        return voteForExistingOption(req, res, pollId, option.id);
+      }
+    }
+  }
 }
 
 module.exports = PollsHandler;
